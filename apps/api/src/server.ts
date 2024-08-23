@@ -1,0 +1,19 @@
+import express, { json, urlencoded, type Express } from "express";
+import cors from "cors";
+
+export const createServer = (): Express => {
+  const app = express();
+  app
+    .disable("x-powered-by")
+    .use(urlencoded({ extended: true }))
+    .use(json())
+    .use(cors())
+    .get("/message/:name", (req, res) => {
+      return res.json({ message: `hello ${req.params.name}` });
+    })
+    .get("/", (_, res) => {
+      return res.json({ ok: true });
+    });
+
+  return app;
+};
