@@ -1,0 +1,143 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// * #region Character Builds
+
+model character_build {
+  id                     Int                     @id @default(autoincrement())
+  name                   String                  @unique
+  description            String                  @db.Text
+  level                  Int
+  race                   character_race          @relation(fields: [race_id], references: [id])
+  race_id                Int
+  standing_stone         standing_stone          @relation(fields: [standing_stone_id], references: [id])
+  standing_stone_id      Int
+  class                  character_class?        @relation(fields: [class_id], references: [id])
+  class_id               Int
+  magicka_stat_spread    Int
+  health_stat_spread     Int
+  stamina_stat_spread    Int
+  character_build_stars  character_build_star[]
+  character_build_owners character_build_owner[]
+  character_build_perks  character_build_perk[]
+  user_saved_builds      user_saved_build[]
+  character_build_steps  character_build_step[]
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @updatedAt
+}
+
+model character_build_step {
+  id                 Int             @id @default(autoincrement())
+  character_build    character_build @relation(fields: [character_build_id], references: [id])
+  character_build_id Int
+  order_number       Int
+  description        String          @db.Text
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+}
+
+model character_build_perk {
+  id                 Int             @id @default(autoincrement())
+  perk               perk            @relation(fields: [perk_id], references: [id])
+  perk_id            Int
+  character_build    character_build @relation(fields: [character_build_id], references: [id])
+  character_build_id Int
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+}
+
+model character_build_star {
+  id                 Int             @id @default(autoincrement())
+  user               user            @relation(fields: [user_id], references: [id])
+  user_id            Int
+  character_build    character_build @relation(fields: [character_build_id], references: [id])
+  character_build_id Int
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+}
+
+// * #endregion Character Builds
+
+// * #region Supporting Models (Race, Class, Standing Stone, and Perk)
+
+model perk {
+  id                    Int                    @id @default(autoincrement())
+  name                  String                 @unique
+  description           String                 @db.Text
+  rank                  Int
+  character_build_perks character_build_perk[]
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+}
+
+model character_race {
+  id               Int               @id @default(autoincrement())
+  name             String            @unique
+  description      String            @db.Text
+  character_builds character_build[]
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+}
+
+model standing_stone {
+  id               Int               @id @default(autoincrement())
+  name             String            @unique
+  description      String            @db.Text
+  character_builds character_build[]
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+}
+
+model character_class {
+  id               Int               @id @default(autoincrement())
+  name             String            @unique
+  description      String            @db.Text
+  character_builds character_build[]
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+}
+
+// * #endregion Supporting Models (Race, Class, Standing Stone, and Perk)
+
+// * #region User and Build Ownership
+
+model user {
+  id                     Int                     @id @default(autoincrement())
+  email                  String                  @unique
+  username               String                  @unique
+  password               String
+  character_build_owners character_build_owner[]
+  character_build_stars  character_build_star[]
+  user_saved_builds      user_saved_build[]
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @updatedAt
+}
+
+model character_build_owner {
+  id                 Int             @id @default(autoincrement())
+  user               user            @relation(fields: [user_id], references: [id])
+  user_id            Int
+  character_build    character_build @relation(fields: [character_build_id], references: [id])
+  character_build_id Int
+  is_original_poster Boolean
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+}
+
+model user_saved_build {
+  id                 Int             @id @default(autoincrement())
+  user               user            @relation(fields: [user_id], references: [id])
+  user_id            Int
+  character_build    character_build @relation(fields: [character_build_id], references: [id])
+  character_build_id Int
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+}
+
+// * #endregion User and Build Ownership
