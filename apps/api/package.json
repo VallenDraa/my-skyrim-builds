@@ -12,9 +12,9 @@
     "test": "jest --detectOpenHandles"
   },
   "dependencies": {
+    "@repo/logger": "workspace:*",
     "cors": "^2.8.5",
-    "express": "^4.19.2",
-    "winston": "^3.14.2"
+    "express": "^4.19.2"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
