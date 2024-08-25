@@ -66,8 +66,19 @@ model character_build_star {
 
 // * #region Supporting Models (Race, Class, Standing Stone, and Perk)
 
+model skill {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String   @db.Text
+  perks       perk[]
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+}
+
 model perk {
   id                    Int                    @id @default(autoincrement())
+  skill                 skill                  @relation(fields: [skill_id], references: [id])
+  skill_id              Int
   name                  String                 @unique
   description           String                 @db.Text
   rank                  Int
