@@ -9,146 +9,172 @@ datasource db {
 
 // * #region Character Builds
 
-model character_build {
-  id                     Int                     @id @default(autoincrement())
-  name                   String                  @unique
-  description            String                  @db.Text
-  level                  Int
-  race                   character_race          @relation(fields: [race_id], references: [id])
-  race_id                Int
-  standing_stone         standing_stone          @relation(fields: [standing_stone_id], references: [id])
-  standing_stone_id      Int
-  class                  character_class?        @relation(fields: [class_id], references: [id])
-  class_id               Int
-  magicka_stat_spread    Int
-  health_stat_spread     Int
-  stamina_stat_spread    Int
-  character_build_stars  character_build_star[]
-  character_build_owners character_build_owner[]
-  character_build_perks  character_build_perk[]
-  user_saved_builds      user_saved_build[]
-  character_build_steps  character_build_step[]
-  created_at             DateTime                @default(now())
-  updated_at             DateTime                @updatedAt
+model CharacterBuild {
+  id                   Int                   @id @default(autoincrement())
+  name                 String                @unique
+  thumbnail            String?
+  description          String?               @db.Text
+  level                Int
+  race                 CharacterRace         @relation(fields: [raceId], references: [id])
+  raceId               Int                   @map("race_id")
+  standingStone        StandingStone         @relation(fields: [standingStoneId], references: [id])
+  standingStoneId      Int                   @map("standing_stone_id")
+  class                CharacterClass        @relation(fields: [classId], references: [id])
+  classId              Int                   @map("class_id")
+  magickaStatSpread    Int                   @map("magicka_stat_spread")
+  healthStatSpread     Int                   @map("health_stat_spread")
+  staminaStatSpread    Int                   @map("stamina_stat_spread")
+  characterBuildStars  CharacterBuildStar[]
+  characterBuildOwners CharacterBuildOwner[]
+  characterBuildPerks  CharacterBuildPerk[]
+  userSavedBuilds      UserSavedBuild[]
+  characterBuildSteps  CharacterBuildStep[]
+  createdAt            DateTime              @default(now()) @map("created_at")
+  updatedAt            DateTime              @updatedAt @map("updated_at")
+
+  @@map("character_build")
 }
 
-model character_build_step {
-  id                 Int             @id @default(autoincrement())
-  character_build    character_build @relation(fields: [character_build_id], references: [id])
-  character_build_id Int
-  order_number       Int
-  description        String          @db.Text
-  created_at         DateTime        @default(now())
-  updated_at         DateTime        @updatedAt
+model CharacterBuildStep {
+  id               Int            @id @default(autoincrement())
+  characterBuild   CharacterBuild @relation(fields: [characterBuildId], references: [id])
+  characterBuildId Int            @map("character_build_id")
+  orderNumber      Int            @map("order_number")
+  description      String         @db.Text
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @updatedAt @map("updated_at")
+
+  @@map("character_build_step")
 }
 
-model character_build_perk {
-  id                 Int             @id @default(autoincrement())
-  perk               perk            @relation(fields: [perk_id], references: [id])
-  perk_id            Int
-  character_build    character_build @relation(fields: [character_build_id], references: [id])
-  character_build_id Int
-  created_at         DateTime        @default(now())
-  updated_at         DateTime        @updatedAt
+model CharacterBuildPerk {
+  id               Int            @id @default(autoincrement())
+  perk             Perk           @relation(fields: [perkId], references: [id])
+  perkId           Int            @map("perk_id")
+  characterBuild   CharacterBuild @relation(fields: [characterBuildId], references: [id])
+  characterBuildId Int            @map("character_build_id")
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @updatedAt @map("updated_at")
+
+  @@map("character_build_perk")
 }
 
-model character_build_star {
-  id                 Int             @id @default(autoincrement())
-  user               user            @relation(fields: [user_id], references: [id])
-  user_id            Int
-  character_build    character_build @relation(fields: [character_build_id], references: [id])
-  character_build_id Int
-  created_at         DateTime        @default(now())
-  updated_at         DateTime        @updatedAt
+model CharacterBuildStar {
+  id               Int            @id @default(autoincrement())
+  user             User           @relation(fields: [userId], references: [id])
+  userId           Int            @map("user_id")
+  characterBuild   CharacterBuild @relation(fields: [characterBuildId], references: [id])
+  characterBuildId Int            @map("character_build_id")
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @updatedAt @map("updated_at")
+
+  @@map("character_build_star")
 }
 
 // * #endregion Character Builds
 
 // * #region Supporting Models (Race, Class, Standing Stone, and Perk)
 
-model skill {
+model Skill {
   id          Int      @id @default(autoincrement())
   name        String   @unique
   description String   @db.Text
-  perks       perk[]
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  perks       Perk[]
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("skill")
 }
 
-model perk {
-  id                    Int                    @id @default(autoincrement())
-  skill                 skill                  @relation(fields: [skill_id], references: [id])
-  skill_id              Int
-  name                  String                 @unique
-  description           String                 @db.Text
-  rank                  Int
-  character_build_perks character_build_perk[]
-  created_at            DateTime               @default(now())
-  updated_at            DateTime               @updatedAt
+model Perk {
+  id                  Int                  @id @default(autoincrement())
+  skill               Skill                @relation(fields: [skillId], references: [id])
+  skillId             Int                  @map("skill_id")
+  name                String               @unique
+  description         String               @db.Text
+  rank                Int
+  characterBuildPerks CharacterBuildPerk[]
+  createdAt           DateTime             @default(now()) @map("created_at")
+  updatedAt           DateTime             @updatedAt @map("updated_at")
+
+  @@map("perk")
 }
 
-model character_race {
-  id               Int               @id @default(autoincrement())
-  name             String            @unique
-  description      String            @db.Text
-  character_builds character_build[]
-  created_at       DateTime          @default(now())
-  updated_at       DateTime          @updatedAt
+model CharacterRace {
+  id              Int              @id @default(autoincrement())
+  name            String           @unique
+  description     String           @db.Text
+  characterBuilds CharacterBuild[]
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+
+  @@map("character_race")
 }
 
-model standing_stone {
-  id               Int               @id @default(autoincrement())
-  name             String            @unique
-  description      String            @db.Text
-  character_builds character_build[]
-  created_at       DateTime          @default(now())
-  updated_at       DateTime          @updatedAt
+model StandingStone {
+  id              Int              @id @default(autoincrement())
+  name            String           @unique
+  description     String           @db.Text
+  characterBuilds CharacterBuild[]
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+
+  @@map("standing_stone")
 }
 
-model character_class {
-  id               Int               @id @default(autoincrement())
-  name             String            @unique
-  description      String            @db.Text
-  character_builds character_build[]
-  created_at       DateTime          @default(now())
-  updated_at       DateTime          @updatedAt
+model CharacterClass {
+  id              Int              @id @default(autoincrement())
+  name            String           @unique
+  description     String           @db.Text
+  characterBuilds CharacterBuild[]
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+
+  @@map("character_class")
 }
 
 // * #endregion Supporting Models (Race, Class, Standing Stone, and Perk)
 
 // * #region User and Build Ownership
 
-model user {
-  id                     Int                     @id @default(autoincrement())
-  email                  String                  @unique
-  username               String                  @unique
-  password               String
-  character_build_owners character_build_owner[]
-  character_build_stars  character_build_star[]
-  user_saved_builds      user_saved_build[]
-  created_at             DateTime                @default(now())
-  updated_at             DateTime                @updatedAt
+model User {
+  id                   Int                   @id @default(autoincrement())
+  profilePicture       String?               @map("profile_picture")
+  email                String                @unique
+  username             String                @unique
+  password             String
+  characterBuildOwners CharacterBuildOwner[]
+  characterBuildStars  CharacterBuildStar[]
+  userSavedBuilds      UserSavedBuild[]
+  createdAt            DateTime              @default(now()) @map("created_at")
+  updatedAt            DateTime              @updatedAt @map("updated_at")
+
+  @@map("user")
 }
 
-model character_build_owner {
-  id                 Int             @id @default(autoincrement())
-  user               user            @relation(fields: [user_id], references: [id])
-  user_id            Int
-  character_build    character_build @relation(fields: [character_build_id], references: [id])
-  character_build_id Int
-  is_original_poster Boolean
-  created_at         DateTime        @default(now())
-  updated_at         DateTime        @updatedAt
+model CharacterBuildOwner {
+  id               Int            @id @default(autoincrement())
+  user             User           @relation(fields: [userId], references: [id])
+  userId           Int            @map("user_id")
+  characterBuild   CharacterBuild @relation(fields: [characterBuildId], references: [id])
+  characterBuildId Int            @map("character_build_id")
+  isOriginalPoster Boolean        @map("is_original_poster")
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @updatedAt @map("updated_at")
+
+  @@map("character_build_owner")
 }
 
-model user_saved_build {
-  id                 Int             @id @default(autoincrement())
-  user               user            @relation(fields: [user_id], references: [id])
-  user_id            Int
-  character_build    character_build @relation(fields: [character_build_id], references: [id])
-  character_build_id Int
-  created_at         DateTime        @default(now())
-  updated_at         DateTime        @updatedAt
+model UserSavedBuild {
+  id               Int            @id @default(autoincrement())
+  user             User           @relation(fields: [userId], references: [id])
+  userId           Int            @map("user_id")
+  characterBuild   CharacterBuild @relation(fields: [characterBuildId], references: [id])
+  characterBuildId Int            @map("character_build_id")
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @updatedAt @map("updated_at")
+
+  @@map("user_saved_build")
 }
 
 // * #endregion User and Build Ownership
