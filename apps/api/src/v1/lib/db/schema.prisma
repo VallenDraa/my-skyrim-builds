@@ -28,8 +28,8 @@ model character_build {
   character_build_perks  character_build_perk[]
   user_saved_builds      user_saved_build[]
   character_build_steps  character_build_step[]
-  createdAt              DateTime                @default(now())
-  updatedAt              DateTime                @updatedAt
+  created_at             DateTime                @default(now())
+  updated_at             DateTime                @updatedAt
 }
 
 model character_build_step {
@@ -38,8 +38,8 @@ model character_build_step {
   character_build_id Int
   order_number       Int
   description        String          @db.Text
-  createdAt          DateTime        @default(now())
-  updatedAt          DateTime        @updatedAt
+  created_at         DateTime        @default(now())
+  updated_at         DateTime        @updatedAt
 }
 
 model character_build_perk {
@@ -48,8 +48,8 @@ model character_build_perk {
   perk_id            Int
   character_build    character_build @relation(fields: [character_build_id], references: [id])
   character_build_id Int
-  createdAt          DateTime        @default(now())
-  updatedAt          DateTime        @updatedAt
+  created_at         DateTime        @default(now())
+  updated_at         DateTime        @updatedAt
 }
 
 model character_build_star {
@@ -58,8 +58,8 @@ model character_build_star {
   user_id            Int
   character_build    character_build @relation(fields: [character_build_id], references: [id])
   character_build_id Int
-  createdAt          DateTime        @default(now())
-  updatedAt          DateTime        @updatedAt
+  created_at         DateTime        @default(now())
+  updated_at         DateTime        @updatedAt
 }
 
 // * #endregion Character Builds
@@ -72,8 +72,8 @@ model perk {
   description           String                 @db.Text
   rank                  Int
   character_build_perks character_build_perk[]
-  createdAt             DateTime               @default(now())
-  updatedAt             DateTime               @updatedAt
+  created_at            DateTime               @default(now())
+  updated_at            DateTime               @updatedAt
 }
 
 model character_race {
@@ -81,8 +81,8 @@ model character_race {
   name             String            @unique
   description      String            @db.Text
   character_builds character_build[]
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
+  created_at       DateTime          @default(now())
+  updated_at       DateTime          @updatedAt
 }
 
 model standing_stone {
@@ -90,8 +90,8 @@ model standing_stone {
   name             String            @unique
   description      String            @db.Text
   character_builds character_build[]
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
+  created_at       DateTime          @default(now())
+  updated_at       DateTime          @updatedAt
 }
 
 model character_class {
@@ -99,8 +99,8 @@ model character_class {
   name             String            @unique
   description      String            @db.Text
   character_builds character_build[]
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
+  created_at       DateTime          @default(now())
+  updated_at       DateTime          @updatedAt
 }
 
 // * #endregion Supporting Models (Race, Class, Standing Stone, and Perk)
@@ -115,8 +115,8 @@ model user {
   character_build_owners character_build_owner[]
   character_build_stars  character_build_star[]
   user_saved_builds      user_saved_build[]
-  createdAt              DateTime                @default(now())
-  updatedAt              DateTime                @updatedAt
+  created_at             DateTime                @default(now())
+  updated_at             DateTime                @updatedAt
 }
 
 model character_build_owner {
@@ -126,8 +126,8 @@ model character_build_owner {
   character_build    character_build @relation(fields: [character_build_id], references: [id])
   character_build_id Int
   is_original_poster Boolean
-  createdAt          DateTime        @default(now())
-  updatedAt          DateTime        @updatedAt
+  created_at         DateTime        @default(now())
+  updated_at         DateTime        @updatedAt
 }
 
 model user_saved_build {
@@ -136,8 +136,8 @@ model user_saved_build {
   user_id            Int
   character_build    character_build @relation(fields: [character_build_id], references: [id])
   character_build_id Int
-  createdAt          DateTime        @default(now())
-  updatedAt          DateTime        @updatedAt
+  created_at         DateTime        @default(now())
+  updated_at         DateTime        @updatedAt
 }
 
 // * #endregion User and Build Ownership
