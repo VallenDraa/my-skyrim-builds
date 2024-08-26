@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint src/",
     "db:generate": "pnpm prisma generate",
+    "db:seed": "pnpm tsx src/v1/lib/db/seed.ts",
     "db:migrate:prod": "pnpm prisma migrate deploy",
     "db:migrate:dev": "pnpm prisma migrate dev",
     "db:push": "pnpm prisma db push",
@@ -23,7 +24,8 @@
     "@repo/logger": "workspace:*",
     "cors": "^2.8.5",
     "express": "^4.19.2",
-    "prisma": "^5.18.0"
+    "prisma": "^5.18.0",
+    "tsx": "^4.18.0"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
