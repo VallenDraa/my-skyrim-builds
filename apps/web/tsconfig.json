@@ -5,7 +5,13 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "declarationMap": false,
+    "declaration": false,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": [
     "next-env.d.ts",
