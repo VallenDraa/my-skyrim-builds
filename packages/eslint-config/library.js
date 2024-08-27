@@ -31,4 +31,9 @@ module.exports = {
       files: ["*.js?(x)", "*.ts?(x)"],
     },
   ],
+  rules: {
+    "no-unused-vars": {
+      argsIgnorePattern: "^_",
+    },
+  },
 };
